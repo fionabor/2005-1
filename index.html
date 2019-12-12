@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>2005-1</title>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
+<style>
+  html,
+body {
+  background-color: white;
+}
+
+.col-md {
+  background-color: #1e1920;
+}
+
+.dragClass {
+  background-color: #1e1920;
+}
+
+h1 {
+  background-color: #1e1920;
+  position: relative;
+  right: 15px;
+  width: 1140px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+h2 {
+  font-size: 20px;
+  background-color: #9f8fa0;
+  position: relative;
+  left: 35px;
+  font-family: sans-serif;
+  font-weight: bold;
+  width: 200px;
+  color: #ffffff;
+  text-align: center;
+  border: dotted white;
+}
+
+li {
+  color: #ffffff;
+  font-family: sans-serif;
+  border: dotted white;
+}
+
+li {
+  background-color: #9f8fa0;
+  border: 1px dotted #9f8fa0;
+}
+</style>
+</head>
+<body translate="no">
+<div class='container'>
+<h1>Animal Vegetable, Mineral Score:<span id="score"> 0</span></h1>
+<div class='row'>
+<div class="col-md">
+<h2>All</h2>
+<ul id='main'>
+
+</ul>
+</div>
+<div class='col-md'>
+<h2>Animal</h2>
+<ul id='animal'>
+</ul>
+</div>
+<div class='col-md'>
+<h2>Vegetable</h2>
+<ul id='vegetable'>
+</ul>
+</div>
+<div class='col-md'>
+<h2>Mineral</h2>
+<ul id='mineral'>
+</ul>
+</div>
+</div>
+</div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js'></script>
+<script id="rendered-js">
+      console.clear();
+const items = [];
+function makeItem(name, category) {
+  const item = {};
+  item.name = name;
+  item.category = category;
+  item.column = "";
+  item.id = items.length;
+  items.push(item);
+}
+
+makeItem("cow", "animal");
+makeItem("carrot", "vegetable");
+makeItem("coal", "mineral");
+makeItem("cat", "animal");
+makeItem("broccoli", "vegetable");
+makeItem("diamond", "mineral");
+makeItem("dog", "animal");
+
+addItemsToMain();
+
+function addItemsToMain() {
+  for (let i = 0; i < items.length; i++) {
+    console.log(i, items[i]);
+    const ul = document.getElementById("main");
+    const li = document.createElement("li");
+    li.setAttribute("data-id",items[i].id);
+    textnode = document.createTextNode(items[i].name); 
+    li.appendChild(textnode);
+    ul.appendChild(li);
+  }
+}
+function doOnEnd(e){
+  const column = e.to.id;
+  const item = e.item.getAttribute('data-id');
+  items[item].column = column;
+  let score = 0;
+  for(let i = 0; i<items.length; i++){
+    if(items[i].category == items[i].column){
+      score = score +1;
+    }
+  }
+  console.log(score)
+  document.getElementById("score").textContent = score;
+}
+
+new Sortable(main, {
+  animation: 150,
+  ghostClass: "dragClass",
+  group: {
+    name: "r1",
+    put: true
+  },
+  sort: false,
+  swapThreshold: 1,
+  onEnd: doOnEnd
+});
+
+new Sortable(animal, {
+  animation: 150,
+  ghostClass: "dragClass",
+  group: {
+    name: "r1",
+    put: true
+  },
+  swapThreshold: 1,
+  onEnd: doOnEnd,
+
+});
+
+new Sortable(vegetable, {
+  animation: 150,
+  ghostClass: "dragClass",
+  group: "r1",
+  swapThreshold: 1,
+  onEnd: doOnEnd,
+});
+
+new Sortable(mineral, {
+  animation: 150,
+  ghostClass: "dragClass",
+  group: "r1",
+  swapThreshold: 1,
+  onEnd: doOnEnd,
+
+});
+    </script>
+</body>
+</html>
